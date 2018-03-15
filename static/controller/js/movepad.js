@@ -42,19 +42,25 @@ class MovePad {
 			this.touchX = x;
 			this.touchY = y;
         }
+		if(this.onpressed)
+			this.onpressed();
     }
     
-    onRelease(x, y, touch) {
-		if(this.touchId == null || this.touch == null || touch.identifier === this.touchId) {
-			this.pressed = false;
-			this.touchId = null;
-		}
+	onRelease(x, y, touch) {
+        if((this.touchId==null && touch==null) || (touch!=null?this.touchId === touch.identifier:false)) {
+            this.pressed = false;
+            this.touchId = null;
+        }
+		if(this.onreleased)
+			this.onreleased();
     }
-	
-	onMove(x, y, touch) {
-		if(this.touchId == null || this.touch == null || this.touchId === touch.identifier) {
-			this.touchX = x;
-			this.touchY = y;
-		}
-	}
+
+    onMove(x, y, touch) {
+        if((this.touchId==null && touch==null) || (touch!=null?this.touchId === touch.identifier:false)) {
+            this.touchX = x;
+            this.touchY = y;
+        }
+		if(this.onmoved)
+			this.onmoved();
+    }
 }

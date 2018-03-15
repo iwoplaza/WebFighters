@@ -1,17 +1,42 @@
 var canvas, ctx;
 var movePadMovement;
 var movePadAttack;
+var loginPrompt;
 
 function main() {
+	console.log('Connected to server...');
+	
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext('2d');
     
     movePadMovement = new MovePad(0, 0, canvas.width/2, canvas.height, 0);
     movePadAttack = new MovePad(canvas.width/2, 0, canvas.width/2, canvas.height, 180);
     
+	movePadMovement.onpressed = function() {
+		WebHandler.socket.emit('message', Coder.encode({
+			'action': 51
+		}, Coder.Messages.PLAYER_ACTION));
+	}
+	
+	loginPrompt = new LoginPrompt(joinGame);
+	
     run();
 }
-main();
+WebHandler.init(main);
+
+function joinGame(loginPrompt) {
+	console.log('Trying to join as: ' + loginPrompt.elementNameInput.value);
+	
+	WebHandler.socket.emit('message', Coder.encode({
+		'name': loginPrompt.elementNameInput.value
+	}, Coder.Messages.JOIN_REQUEST));
+}
+
+function onGameJoined() {
+	console.log('Joined game!');
+	loginPrompt.close();
+	IO.setupControls();
+}
 
 function run() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -30,56 +55,8 @@ function pageToCanvasCoords(x, y) {
 	};
 	
 	coords.y += document.body.scrollTop;
-	coords.x *= canvas.width/canvas.clientWidth;
-	coords.y *= canvas.height/canvas.clientHeight;
+	coords.x *= canvas.width / canvas.clientWidth;
+	coords.y *= canvas.height / canvas.clientHeight;
 	
 	return coords;
-}
-
-document.onmousedown = function(e) {
-	e.preventDefault();
-	let coords = pageToCanvasCoords(e.clientX, e.clientY);
-	movePadMovement.onPress(coords.x, coords.y, null);
-	movePadAttack.onPress(coords.x, coords.y, null);
-};
-
-document.onmouseup = function(e) {
-	e.preventDefault();
-	let coords = pageToCanvasCoords(e.clientX, e.clientY);
-	movePadMovement.onRelease(coords.x, coords.y, null);
-	movePadAttack.onRelease(coords.x, coords.y, null);
-};
-
-document.onmousemove = function(e) {
-	e.preventDefault();
-	let coords = pageToCanvasCoords(e.clientX, e.clientY);
-	movePadMovement.onMove(coords.x, coords.y, null);
-	movePadAttack.onMove(coords.x, coords.y, null);
-};
-
-document.ontouchstart = function(e) {
-	e.preventDefault();
-	for(let touch of e.changedTouches) {
-		let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
-		movePadMovement.onPress(coords.x, coords.y, touch);
-		movePadAttack.onPress(coords.x, coords.y, touch);
-	}
-};
-
-document.ontouchend = function(e) {
-	e.preventDefault();
-	for(let touch of e.changedTouches) {
-		let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
-		movePadMovement.onRelease(coords.x, coords.y, touch);
-		movePadAttack.onRelease(coords.x, coords.y, touch);
-	}
-};
-
-document.ontouchmove = function(e) {
-	e.preventDefault();
-	for(let touch of e.changedTouches) {
-		let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
-		movePadMovement.onMove(coords.x, coords.y, touch);
-		movePadAttack.onMove(coords.x, coords.y, touch);
-	}
 }

@@ -1,39 +1,24 @@
+var Vector2 = require("./../static/js/util/vector2.js");
+
 class Player {
-	constructor(connection, name) {
+	constructor(connection, id, name) {
 		this.connection = connection;
+		this.id = id;
 		this.name = name;
+		connection.session.player = this;
 		
-		connection.player = this;
+		this.location = new Vector2();
+		this.velocity = new Vector2();
+		this.moveDirection = 0;
+		this.doubleJumped = false;
+		this.jumping = false;
+		this.turn = false;
+		this.onGround = false;
+		
+		this.movementSpeed = 30000;
+		this.maxVelocityX = 700;
+		this.gravity = 70;
 	}
-}
-
-Player.list = [];
-
-Player.doesConnectionExist = function(connection) {
-	for(var i = 0; i < Player.list.length; ++i) {
-		if(Player.list[i].connection == connection) {
-			return true;
-		}
-	}
-	return false;
-}
-
-Player.addPlayer = function(player) {
-	if(!this.doesConnectionExist(player.connection)) {
-		Player.list.push(player);
-		return true;
-	}
-	return false;
-}
-
-Player.removeConnection = function(connection) {
-	for(var i = 0; i < Player.list.length; ++i) {
-		if(Player.list[i].connection == connection) {
-			Player.list.splice(i, 1);
-			return true;
-		}
-	}
-	return false;
 }
 
 module.exports = Player;

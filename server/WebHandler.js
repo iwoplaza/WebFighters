@@ -9,7 +9,7 @@ module.exports = {
             res.sendFile(ROOTPATH + '/static/controller/index.html');
         });
 		expressApp.get('/watch', function(req, res) {
-            res.sendFile(ROOTPATH + '/static/index.html');
+            res.sendFile(ROOTPATH + '/static/watch/index.html');
         });
         expressApp.use(express.static('./static/'));
         

@@ -9,5 +9,5 @@ class Vector2 {
     }
 }
 
-if(module)
+if(typeof module !== 'undefined')
 	module.exports = Vector2;

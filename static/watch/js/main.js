@@ -2,7 +2,8 @@ var canvas, ctx;
 var game;
 
 function main() {
-    console.log('Starting up...');
+    console.log('Connected to server...');
+	
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     
@@ -26,6 +27,7 @@ function main() {
 	
     run();
 }
+WebHandler.init(main);
 
 function run() {
     Time.update();
@@ -46,5 +48,3 @@ function run() {
 	
     requestAnimationFrame(run);
 }
-
-main();

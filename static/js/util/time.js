@@ -9,5 +9,5 @@ Time.update = function() {
     Time.lastTime = now;
 }
 
-if(module)
+if(typeof module !== 'undefined')
 	module.exports.Time = Time;

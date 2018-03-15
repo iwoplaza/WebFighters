@@ -1,8 +1,5 @@
 var Coder = {};
-
-Coder.masks = [
-	/*Player Action*/ ["action"]
-];
+Coder.masks = [];
 
 Coder.buff = new ArrayBuffer(8);
 Coder.f64 = new Float64Array(Coder.buff);
@@ -83,14 +80,14 @@ Coder.unserialize = function(_mask,_table) {
     return output;
 }
 
-Coder.addMask = function(_mask) {
-    return this.masks.push(_mask)-1;
+Coder.addMask = function(id, mask) {
+    this.masks[id] = mask;
 }
 
 Coder.guessMask = function(_object) {
     let mask = null;
-    for (let i=0;i<this.masks.length;i++){
-        for (let j=0;j<this.masks[i].length;j++){
+    for (let i in this.masks){
+        for (let j = 0; j < this.masks[i].length; ++j){
             if (this.masks[i][j] in _object){
                 if (j == this.masks[i].length-1) mask = i;
             }else{
@@ -100,17 +97,18 @@ Coder.guessMask = function(_object) {
     }
     return mask;
 }
-var msgMask = ["channel", "user", "msg"];
-var playerMask = ["name","x","y","nation","score"];
-var testPlayer = {name: "Marek", x: 12, y: 257, nation: "Poland", score: 12364};
-var testMsg = {channel: 5, user: "Maro919", msg: "Hello, world!"};
 
-var commTest = "";
-Coder.addMask(playerMask);
-Coder.addMask(msgMask);
+Coder.Messages = {
+	JOIN_REQUEST: 0,
+	JOIN_RESPONSE: 1,
+	PLAYER_ACTION: 10,
+	PLAYER_UPDATE: 11
+};
 
-for (var i=0;i<10;i++){
-    commTest += Coder.encode(testPlayer);
-    commTest += Coder.encode(testMsg);
-    commTest += Coder.encode(testMsg);
-}
+Coder.addMask(Coder.Messages.JOIN_REQUEST, ["name"]);
+Coder.addMask(Coder.Messages.JOIN_RESPONSE, ["response"]);
+Coder.addMask(Coder.Messages.PLAYER_ACTION, ["action"]);
+Coder.addMask(Coder.Messages.PLAYER_UPDATE, ["action"]);
+
+if(typeof module !== 'undefined')
+	module.exports = Coder;
