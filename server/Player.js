@@ -7,7 +7,7 @@ class Player {
 		this.name = name;
 		connection.session.player = this;
 		
-		this.location = new Vector2();
+		this.location = new Vector2(Math.random()*40, 0);
 		this.velocity = new Vector2();
 		this.moveDirection = 0;
 		this.doubleJumped = false;

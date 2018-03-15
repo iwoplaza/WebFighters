@@ -2,7 +2,15 @@ var MessageHandler = {};
 MessageHandler.messageCallbacks = {};
 MessageHandler.messageCallbacks[Coder.Messages.WATCH_INIT] = function(packet) {
 	let msg = packet[0];
+	packet.splice(0, 1);
 	console.log('Got a response: ' + msg.response);
+	
+	game.players = [];
+	for(let data of packet) {
+		let player = game.addPlayer(new Player(data.id, data.name));
+		player.location.x = data.x;
+		player.location.y = data.y;
+	}
 	
 	if(msg.response == 0) {
 		startSpectating(msg);
@@ -11,6 +19,7 @@ MessageHandler.messageCallbacks[Coder.Messages.WATCH_INIT] = function(packet) {
 		return;
 	}
 }
+
 MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION_UPDATE] = function(packet) {
 	let msg = packet[0];
 	console.log('Got an action: ' + msg.action);

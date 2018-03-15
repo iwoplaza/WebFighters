@@ -9,4 +9,10 @@ class Camera {
 		ctx.scale(this.scale, this.scale);
 		ctx.translate(this.location.x, this.location.y);
 	}
+	
+	update(game) {
+		if(!game.players[0])
+			return;
+		this.location = new Vector2(-game.players[0].location.x, -game.players[0].location.y);
+	}
 }

@@ -11,6 +11,7 @@ class Game {
     
     addPlayer(player) {
         this.players[player.id] = player;
+		return player;
     }
     
     run() {
@@ -18,7 +19,7 @@ class Game {
             player.update();
         }
 		
-		this.camera.location = new Vector2(-this.players[0].location.x, -this.players[0].location.y);
+		this.camera.update(this);
 		this.camera.applyTransform(ctx);
 		
         this.world.draw();

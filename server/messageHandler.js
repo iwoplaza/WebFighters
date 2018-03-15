@@ -68,7 +68,19 @@ MessageHandler.messageCallbacks[Coder.Messages.WATCH_REQUEST] = function(connect
 	
 	game.addWatcher(connection);
 	
-	connection.emit('message', Coder.encode({response: 0}, Coder.Messages.WATCH_INIT));
+	let watchInitResponse = "";
+	for(let i in game.players) {
+		if(game.players[i]) {
+			let player = game.players[i];
+			watchInitResponse += Coder.encode({
+				id: player.id,
+				name: player.name,
+				x: player.location.x,
+				y: player.location.y
+			}, Coder.Messages.PLAYER_INIT_DATA);
+	 	}
+	}
+	connection.emit('message', Coder.encode({time: 0}, Coder.Messages.WATCH_INIT) + watchInitResponse);
 }
 
 MessageHandler.decode = function(connection, msg) {

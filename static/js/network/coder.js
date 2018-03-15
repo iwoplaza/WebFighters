@@ -103,6 +103,10 @@ Coder.Messages = {
 	JOIN_RESPONSE: 1,
 	WATCH_REQUEST: 2,
 	WATCH_INIT: 3,
+	PLAYER_INIT: 4,
+	PLAYER_INIT_PLAYER: 5,
+	PLAYER_UPDATE: 6,
+	PLAYER_UPDATE_PLAYER: 7,
 	PLAYER_ACTION: 10,
 	PLAYER_ACTION_UPDATE: 11
 };
@@ -110,7 +114,10 @@ Coder.Messages = {
 Coder.addMask(Coder.Messages.JOIN_REQUEST, ["name"]);
 Coder.addMask(Coder.Messages.JOIN_RESPONSE, ["response"]);
 Coder.addMask(Coder.Messages.WATCH_REQUEST, ["t"]);
-Coder.addMask(Coder.Messages.WATCH_INIT, ["response"]);
+Coder.addMask(Coder.Messages.WATCH_INIT, ["time"]);
+Coder.addMask(Coder.Messages.PLAYER_DATA_INIT, ["id", "name", "x", "y"]);
+Coder.addMask(Coder.Messages.PLAYER_DATA_UPDATE, ["id", "x", "y", "velX", "velY"]);
+Coder.addMask(Coder.Messages.PLAYER_UPDATE, ["time"]);
 Coder.addMask(Coder.Messages.PLAYER_ACTION, ["action"]);
 Coder.addMask(Coder.Messages.PLAYER_ACTION_UPDATE, ["player", "action"]);
 
