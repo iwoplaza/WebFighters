@@ -1,7 +1,7 @@
 var express = require('express');
 var expressApp = express();
 var http = require('http').createServer(expressApp);
-var io = require('socket.io')(http);
+var io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] })(http);
 
 module.exports = {
     startServer: function(callback) {

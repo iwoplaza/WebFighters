@@ -26,20 +26,23 @@ function main() {
 	movePadMovement.onmoved = function(pad) {
 		let x = pad.getDeltaX();
 		const threshold = 30;
-		if(x < -threshold && movementState != -1) {
-			movementState = -1;
+		if(x < -threshold) {
 			sendPlayerAction(2);
-		}else if(x > threshold && movementState != 1) {
-			movementState = 1;
-			sendPlayerAction(3);
-		}else if(movementState != 0){
-			movementState = 0;
+		}else if(x > threshold) {
+			//if(movementState != 1) {
+				//movementState = 1;
+				sendPlayerAction(3);
+			//}
+		}else{
+			//movementState = 0;
 			sendPlayerAction(4);
 		}
 	}
 	
 	movePadMovement.onreleased = function(pad) {
+		//movementState = 0;
 		sendPlayerAction(4);
+		console.log('Released');
 	}
 	
 	loginPrompt = new LoginPrompt(joinGame);
