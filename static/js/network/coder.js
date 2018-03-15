@@ -101,14 +101,18 @@ Coder.guessMask = function(_object) {
 Coder.Messages = {
 	JOIN_REQUEST: 0,
 	JOIN_RESPONSE: 1,
+	WATCH_REQUEST: 2,
+	WATCH_INIT: 3,
 	PLAYER_ACTION: 10,
-	PLAYER_UPDATE: 11
+	PLAYER_ACTION_UPDATE: 11
 };
 
 Coder.addMask(Coder.Messages.JOIN_REQUEST, ["name"]);
 Coder.addMask(Coder.Messages.JOIN_RESPONSE, ["response"]);
+Coder.addMask(Coder.Messages.WATCH_REQUEST, ["t"]);
+Coder.addMask(Coder.Messages.WATCH_INIT, ["response"]);
 Coder.addMask(Coder.Messages.PLAYER_ACTION, ["action"]);
-Coder.addMask(Coder.Messages.PLAYER_UPDATE, ["action"]);
+Coder.addMask(Coder.Messages.PLAYER_ACTION_UPDATE, ["player", "action"]);
 
 if(typeof module !== 'undefined')
 	module.exports = Coder;

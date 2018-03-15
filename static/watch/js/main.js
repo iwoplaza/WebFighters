@@ -13,7 +13,7 @@ function main() {
     player.location.y = 140;
     player.location.x = 90;
     
-	IO.onKeyDown((e) => {
+	/*IO.onKeyDown((e) => {
 		if(e.keyCode == 32) {
 			game.players[0].jumpBegin();
 		}
@@ -23,11 +23,22 @@ function main() {
 		if(e.keyCode == 32) {
 			game.players[0].jumpStop();
 		}
-	});
+	});*/
+	
+	requestSpectating();
 	
     run();
 }
 WebHandler.init(main);
+
+function requestSpectating() {
+	WebHandler.socket.emit('message', Coder.encode({'t': 0}, Coder.Messages.WATCH_REQUEST));
+}
+
+function startSpectating(msg) {
+	console.log('Spectating...');
+	console.dir(msg);
+}
 
 function run() {
     Time.update();
@@ -35,16 +46,14 @@ function run() {
 	ctx.resetTransform();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     game.run();
-    
-    //game.players[0].model.boneStomach.orientation += Time.deltaTime;
-    
-	if(IO.getKeyPressed(65)) {
+	
+	/*if(IO.getKeyPressed(65)) {
 		game.players[0].move(-1);
 	}else if(IO.getKeyPressed(68)) {
 		game.players[0].move(1);
 	}else{
 		game.players[0].move(0);
-	}
+	}*/
 	
     requestAnimationFrame(run);
 }

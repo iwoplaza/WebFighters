@@ -3,6 +3,9 @@ var movePadMovement;
 var movePadAttack;
 var loginPrompt;
 
+// -1 for going left, 0 staying still, 1 for going right
+var movementState = 0;
+
 function main() {
 	console.log('Connected to server...');
 	
@@ -12,10 +15,31 @@ function main() {
     movePadMovement = new MovePad(0, 0, canvas.width/2, canvas.height, 0);
     movePadAttack = new MovePad(canvas.width/2, 0, canvas.width/2, canvas.height, 180);
     
-	movePadMovement.onpressed = function() {
-		WebHandler.socket.emit('message', Coder.encode({
-			'action': 51
-		}, Coder.Messages.PLAYER_ACTION));
+	movePadAttack.onpressed = function(pad) {
+		sendPlayerAction(0);
+	}
+	
+	movePadAttack.onreleased = function(pad) {
+		sendPlayerAction(1);
+	}
+	
+	movePadMovement.onmoved = function(pad) {
+		let x = pad.getDeltaX();
+		const threshold = 30;
+		if(x < -threshold && movementState != -1) {
+			movementState = -1;
+			sendPlayerAction(2);
+		}else if(x > threshold && movementState != 1) {
+			movementState = 1;
+			sendPlayerAction(3);
+		}else if(movementState != 0){
+			movementState = 0;
+			sendPlayerAction(4);
+		}
+	}
+	
+	movePadMovement.onreleased = function(pad) {
+		sendPlayerAction(4);
 	}
 	
 	loginPrompt = new LoginPrompt(joinGame);
@@ -36,6 +60,12 @@ function onGameJoined() {
 	console.log('Joined game!');
 	loginPrompt.close();
 	IO.setupControls();
+}
+
+function sendPlayerAction(action) {
+	WebHandler.socket.emit('message', Coder.encode({
+		'action': action
+	}, Coder.Messages.PLAYER_ACTION));
 }
 
 function run() {

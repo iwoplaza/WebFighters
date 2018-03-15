@@ -5,11 +5,12 @@ MessageHandler = {};
 MessageHandler.messageCallbacks = {};
 
 MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION] = function(connection, packet) {
-	console.log('Got a player action:' + packet[0].action);
+	let msg = packet[0];
+	console.log('Got a player action:' + msg.action);
 	console.dir(packet);
 	
 	let session = connection.session;
-	if(!session) {
+	if(!session || !session.player) {
 		console.error("Encountered a player with an invalid session.");
 		return;
 	}
@@ -20,13 +21,14 @@ MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION] = function(connect
 		return;
 	}
 	
-	let msg = Coder.encode({
-		'action': 123
+	let response = Coder.encode({
+		player: session.player.id,
+		action: msg.action
 	});
 	
-	for(let player of game.players) {
-		console.log(" - Sending update to " + player.name);
-		player.connection.emit('message', msg, Coder.Messages.PLAYER_UPDATE);
+	for(let watcher of game.watchers) {
+		console.log(" - Sending update to spectator");
+		watcher.connection.emit('message', response, Coder.Messages.PLAYER_ACTION_UPDATE);
 	}
 }
 
@@ -53,12 +55,21 @@ MessageHandler.messageCallbacks[Coder.Messages.JOIN_REQUEST] = function(connecti
 	console.log(msg.name+' joined the game!');
 }
 
-/*
-WebHandler.io.sockets.emit('message', JSON.stringify({
-				header: { type: 'new_chatter' },
-				name: packet.name
-			}));
-*/
+MessageHandler.messageCallbacks[Coder.Messages.WATCH_REQUEST] = function(connection, packet) {
+	let msg = packet[0];
+	
+	console.log('Someone wants spectate the game');
+	
+	let game = Lobby.getOrCreateGame();
+	if(!game) {
+		console.error("Couldn't create a new game/get a game for the spectator.");
+		return;
+	}
+	
+	game.addWatcher(connection);
+	
+	connection.emit('message', Coder.encode({response: 0}, Coder.Messages.WATCH_INIT));
+}
 
 MessageHandler.decode = function(connection, msg) {
     var header = msg.charCodeAt(0);

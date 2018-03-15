@@ -31,9 +31,21 @@ Lobby.getOrCreateGame = function() {
 }
 
 Lobby.removeConnection = function(connection) {
+	this.removePlayerConnection(connection);
+	this.removeWatcherConnection(connection);
+}
+
+Lobby.removePlayerConnection = function(connection) {
 	let game = Lobby.games[connection.session.gameId];
 	if(game != undefined) {
-		game.removeConnection(connection);
+		game.removePlayerConnection(connection);
+	}
+}
+
+Lobby.removeWatcherConnection = function(connection) {
+	let game = Lobby.games[connection.session.gameId];
+	if(game != undefined) {
+		game.removeWatcherConnection(connection);
 	}
 }
 
