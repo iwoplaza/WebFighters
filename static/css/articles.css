@@ -1,0 +1,33 @@
+.articles {
+	position: relative;
+	height: 500px;
+}
+
+.article {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #1f1f1f;
+	z-index:  10;
+	visibility: hidden;
+}
+
+.article.active {
+	visibility: visible;
+}
+
+#article-nav li {
+	cursor: pointer;
+	user-select: none;
+}
+.article img {
+    height: 400px;
+}
+
+@media only screen and (max-width: 1200px) {
+	.articles {
+		overflow: auto;
+	}
+}

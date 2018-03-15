@@ -1,0 +1,55 @@
+#language-picker {
+	display: block;
+	float: right;
+	position: absolute;
+	right: 0;
+	top: 33px;
+	width: 32px;
+	height: 25px;
+	padding: 5px 5px;
+	
+	background-color: #eee;
+	border-radius: 5px;
+}
+
+#language-picker > img {
+	box-sizing: border-box;
+	height: 100%;
+	border: 1px solid #b1b1b1;
+}
+
+#language-picker ul {
+	position: absolute;
+	top: 35px;
+	left: 2px;
+	box-sizing: border-box;
+	display: none;
+	margin: 0;
+	padding: 3px;
+	list-style: none;
+	background-color: #cbcbcb;
+}
+
+#language-picker:hover ul {
+	display: block;
+}
+
+#language-picker ul li {
+	box-sizing: border-box;
+	padding: 2px 0px;
+	height: 29px;
+}
+
+#language-picker ul li a {
+	height: 100%;
+}
+
+#language-picker ul li img {
+	box-sizing: border-box;
+	height: 100%;
+	border: 1px solid #444;
+}
+
+#language-picker:hover ul {
+	display: block;
+}
