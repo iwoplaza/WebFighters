@@ -41,7 +41,7 @@ function sendInitPackage(connection) {
 }
 
 MessageHandler.decode = function(connection, msg) {
-    var header = msg.header;
+    var header = msg.charCodeAt(0);
 
     if(this.messageCallbacks[header.type] != undefined) {
         this.messageCallbacks[header.type](connection, msg);

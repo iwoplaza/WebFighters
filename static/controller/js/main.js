@@ -28,12 +28,10 @@ function pageToCanvasCoords(x, y) {
 		x: x - bounds.left,
 		y: y - bounds.top
 	};
-	coords.y += document.body.scrollTop;
 	
+	coords.y += document.body.scrollTop;
 	coords.x *= canvas.width/canvas.clientWidth;
 	coords.y *= canvas.height/canvas.clientHeight;
-	
-	console.log(canvas.scrollTop);
 	
 	return coords;
 }
