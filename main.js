@@ -8,15 +8,20 @@ Lobby = require('./server/lobby.js');
 WebHandler.startServer(onServerStarted);
 
 function onServerStarted() {
-	WebHandler.io.on('connection', function(connection) {
+	WebHandler.io.on('request', function(request) {
+        var connection = request.accept('connect', request.origin);
+        console.log('Connection from ' + request.origin + ' accepted.');
+		
 		// This will hold meta information about the connection
 		connection.session = {};
 		
-		connection.on('message', function(msg) {
-			MessageHandler.decode(this, msg);
+		connection.on('message', function(message) {
+            if (message.type === 'utf8') {
+                MessageHandler.decode(this, message.utf8Data);
+			}
 		});
 		
-		connection.on('disconnect', function() {
+		connection.on('close', function(e) {
 			Lobby.removeConnection(this);
 		});
 	});

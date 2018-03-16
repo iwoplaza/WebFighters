@@ -24,11 +24,11 @@ MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION] = function(connect
 	let response = Coder.encode({
 		player: session.player.id,
 		action: msg.action
-	});
+	}, Coder.Messages.PLAYER_ACTION_UPDATE);
 	
 	for(let watcher of game.watchers) {
 		console.log(" - Sending update to spectator");
-		watcher.connection.emit('message', response, Coder.Messages.PLAYER_ACTION_UPDATE);
+		MessageHandler.send(watcher.connection, response);
 	}
 }
 
@@ -47,12 +47,21 @@ MessageHandler.messageCallbacks[Coder.Messages.JOIN_REQUEST] = function(connecti
 	var player = game.addPlayer(connection, msg.name);
 	if(!player) {
 		console.error("There was an error while \""+msg.name+"\" was trying to join.");
-		connection.emit('message', Coder.encode({response: 1}, Coder.Messages.JOIN_RESPONSE));
+		MessageHandler.send(connection, Coder.encode({response: 1}, Coder.Messages.JOIN_RESPONSE));
 		return;
 	}
 	
-	connection.emit('message', Coder.encode({response: 0}, Coder.Messages.JOIN_RESPONSE));
+	MessageHandler.send(connection, Coder.encode({response: 0}, Coder.Messages.JOIN_RESPONSE));
 	console.log(msg.name+' joined the game!');
+	
+	let watchInitResponse = Coder.encode({
+		id: player.id,
+		name: player.name,
+		x: player.location.x,
+		y: player.location.y
+	}, Coder.Messages.PLAYER_INIT_DATA);
+	
+	MessageHandler.send(connection, Coder.encode({response: 0}, Coder.Messages.WATCH_INIT) + watchInitResponse);
 }
 
 MessageHandler.messageCallbacks[Coder.Messages.WATCH_REQUEST] = function(connection, packet) {
@@ -72,15 +81,17 @@ MessageHandler.messageCallbacks[Coder.Messages.WATCH_REQUEST] = function(connect
 	for(let i in game.players) {
 		if(game.players[i]) {
 			let player = game.players[i];
+			console.log('Sending player: ' + player.name);
 			watchInitResponse += Coder.encode({
 				id: player.id,
 				name: player.name,
 				x: player.location.x,
 				y: player.location.y
 			}, Coder.Messages.PLAYER_INIT_DATA);
+			console.log(Coder.decode(watchInitResponse));
 	 	}
 	}
-	connection.emit('message', Coder.encode({time: 0}, Coder.Messages.WATCH_INIT) + watchInitResponse);
+	MessageHandler.send(connection, Coder.encode({response: 0}, Coder.Messages.WATCH_INIT) + watchInitResponse);
 }
 
 MessageHandler.decode = function(connection, msg) {
@@ -91,6 +102,10 @@ MessageHandler.decode = function(connection, msg) {
     }else{
         console.warn("Warning: Recieved a message with an unhandled message header (" + header + ")");
     }
+}
+
+MessageHandler.send = function(connection, message) {
+	connection.sendUTF(message);
 }
 
 module.exports = MessageHandler;

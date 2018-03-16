@@ -54,7 +54,7 @@ WebHandler.init(main);
 function joinGame(loginPrompt) {
 	console.log('Trying to join as: ' + loginPrompt.elementNameInput.value);
 	
-	WebHandler.socket.emit('message', Coder.encode({
+	MessageHandler.send(Coder.encode({
 		'name': loginPrompt.elementNameInput.value
 	}, Coder.Messages.JOIN_REQUEST));
 }
@@ -66,7 +66,7 @@ function onGameJoined() {
 }
 
 function sendPlayerAction(action) {
-	WebHandler.socket.emit('message', Coder.encode({
+	MessageHandler.send(Coder.encode({
 		'action': action
 	}, Coder.Messages.PLAYER_ACTION));
 }

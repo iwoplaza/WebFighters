@@ -8,10 +8,6 @@ function main() {
     ctx = canvas.getContext('2d');
     
     game = new Game();
-    let player = new Player(0, 'Hello');
-    game.addPlayer(player);
-    player.location.y = 140;
-    player.location.x = 90;
     
 	/*IO.onKeyDown((e) => {
 		if(e.keyCode == 32) {
@@ -32,7 +28,7 @@ function main() {
 WebHandler.init(main);
 
 function requestSpectating() {
-	WebHandler.socket.emit('message', Coder.encode({'t': 0}, Coder.Messages.WATCH_REQUEST));
+	MessageHandler.send(Coder.encode({'t': 0}, Coder.Messages.WATCH_REQUEST));
 }
 
 function startSpectating(msg) {

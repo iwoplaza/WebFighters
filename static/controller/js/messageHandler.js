@@ -12,6 +12,9 @@ MessageHandler.messageCallbacks[Coder.Messages.JOIN_RESPONSE] = function(packet)
 	}
 }
 
+MessageHandler.send = function(message) {
+	WebHandler.socket.send(message);
+}
 
 MessageHandler.decode = function(packet) {
 	var header = packet.charCodeAt(0);

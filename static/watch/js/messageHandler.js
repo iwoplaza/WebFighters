@@ -7,10 +7,12 @@ MessageHandler.messageCallbacks[Coder.Messages.WATCH_INIT] = function(packet) {
 	
 	game.players = [];
 	for(let data of packet) {
+		console.dir(data);
 		let player = game.addPlayer(new Player(data.id, data.name));
 		player.location.x = data.x;
 		player.location.y = data.y;
 	}
+	console.dir(game.players);
 	
 	if(msg.response == 0) {
 		startSpectating(msg);
@@ -46,6 +48,10 @@ MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION_UPDATE] = function(
 			player.move(0);
 			break;
 	}
+}
+
+MessageHandler.send = function(message) {
+	WebHandler.socket.send(message);
 }
 
 MessageHandler.decode = function(packet) {
