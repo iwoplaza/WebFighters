@@ -1,10 +1,12 @@
 var canvas, ctx;
 var movePadMovement;
 var movePadAttack;
+var movePadJump;
 var loginPrompt;
 
 // -1 for going left, 0 staying still, 1 for going right
 var movementState = 0;
+var jumpState = 0;
 
 function main() {
 	console.log('Connected to server...');
@@ -13,13 +15,14 @@ function main() {
     ctx = canvas.getContext('2d');
     
     movePadMovement = new MovePad(0, 0, canvas.width/2, canvas.height, 0);
-    movePadAttack = new MovePad(canvas.width/2, 0, canvas.width/2, canvas.height, 180);
+	movePadJump = new MovePad(canvas.width/2, 0, canvas.width/2, canvas.height/2, 180);
+    movePadAttack = new MovePad(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2, 210);
     
-	movePadAttack.onpressed = function(pad) {
+	movePadJump.onpressed = function(pad) {
 		sendPlayerAction(0);
 	}
 	
-	movePadAttack.onreleased = function(pad) {
+	movePadJump.onreleased = function(pad) {
 		sendPlayerAction(1);
 	}
 	
@@ -27,20 +30,23 @@ function main() {
 		let x = pad.getDeltaX();
 		const threshold = 30;
 		if(x < -threshold) {
-			sendPlayerAction(2);
+			if(movementState != -1) {
+				movementState = -1;
+				sendPlayerAction(2);
+			}
 		}else if(x > threshold) {
-			//if(movementState != 1) {
-				//movementState = 1;
+			if(movementState != 1) {
+				movementState = 1;
 				sendPlayerAction(3);
-			//}
-		}else{
-			//movementState = 0;
+			}
+		}else if(movementState != 0){
+			movementState = 0;
 			sendPlayerAction(4);
 		}
 	}
 	
 	movePadMovement.onreleased = function(pad) {
-		//movementState = 0;
+		movementState = 0;
 		sendPlayerAction(4);
 		console.log('Released');
 	}
@@ -75,6 +81,7 @@ function run() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     movePadMovement.draw();
+	movePadJump.draw();
     movePadAttack.draw();
     
     requestAnimationFrame(run);

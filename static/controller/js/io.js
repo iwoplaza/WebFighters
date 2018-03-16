@@ -7,6 +7,7 @@ IO.setupControls = function() {
 		e.preventDefault();
 		let coords = pageToCanvasCoords(e.clientX, e.clientY);
 		movePadMovement.onPress(coords.x, coords.y, null);
+		movePadJump.onPress(coords.x, coords.y, null);
 		movePadAttack.onPress(coords.x, coords.y, null);
 	};
 
@@ -14,6 +15,7 @@ IO.setupControls = function() {
 		e.preventDefault();
 		let coords = pageToCanvasCoords(e.clientX, e.clientY);
 		movePadMovement.onRelease(coords.x, coords.y, null);
+		movePadJump.onRelease(coords.x, coords.y, null);
 		movePadAttack.onRelease(coords.x, coords.y, null);
 	};
 
@@ -21,6 +23,7 @@ IO.setupControls = function() {
 		e.preventDefault();
 		let coords = pageToCanvasCoords(e.clientX, e.clientY);
 		movePadMovement.onMove(coords.x, coords.y, null);
+		movePadJump.onMove(coords.x, coords.y, null);
 		movePadAttack.onMove(coords.x, coords.y, null);
 	};
 
@@ -29,6 +32,7 @@ IO.setupControls = function() {
 		for(let touch of e.changedTouches) {
 			let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
 			movePadMovement.onPress(coords.x, coords.y, touch);
+			movePadJump.onPress(coords.x, coords.y, touch);
 			movePadAttack.onPress(coords.x, coords.y, touch);
 		}
 	};
@@ -38,6 +42,7 @@ IO.setupControls = function() {
 		for(let touch of e.changedTouches) {
 			let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
 			movePadMovement.onRelease(coords.x, coords.y, touch);
+			movePadJump.onRelease(coords.x, coords.y, touch);
 			movePadAttack.onRelease(coords.x, coords.y, touch);
 		}
 	};
@@ -47,6 +52,7 @@ IO.setupControls = function() {
 		for(let touch of e.changedTouches) {
 			let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
 			movePadMovement.onMove(coords.x, coords.y, touch);
+			movePadJump.onMove(coords.x, coords.y, touch);
 			movePadAttack.onMove(coords.x, coords.y, touch);
 		}
 	}

@@ -1,4 +1,5 @@
 var Vector2 = require("./../static/js/util/vector2.js");
+var Time = require("./../static/js/util/time.js");
 
 class Player {
 	constructor(connection, id, name) {
@@ -18,6 +19,66 @@ class Player {
 		this.movementSpeed = 30000;
 		this.maxVelocityX = 700;
 		this.gravity = 70;
+	}
+	
+	update(game) {
+		this.velocity.x += this.moveDirection * this.movementSpeed * Time.deltaTime;
+		this.velocity.x *= 0.75;
+		
+		this.velocity.y += this.gravity;
+		
+		// Collision ///////////////////
+		this.onGround = false;
+		
+		for(let platform of game.world.platforms) {
+			let isInBounds = this.location.x-20 <= platform.maxX && this.location.x+20 >= platform.minX;
+			if(isInBounds && this.location.y <= platform.y && this.location.y + this.velocity.y*Time.deltaTime >= platform.y) {
+				this.location.y = platform.y;
+				this.velocity.y = 0;
+				this.onGround = true;
+			}
+		}
+		////////////////////////////////
+		
+		if(this.location.y > 1000) {
+			this.location.x = 0;
+			this.location.y = 0;
+			this.velocity.y = 0;
+		}
+		
+		this.location.x += this.velocity.x * Time.deltaTime;
+		this.location.y += this.velocity.y * Time.deltaTime;
+	}
+	
+	// Moves by the amount <-1, 1>
+	move(amount) {
+		this.moveDirection = amount;
+		this.turn = amount > 0 ? true : amount < 0 ? false : this.turn;
+	}
+	
+	// Makes the player jump
+	jumpBegin() {
+		if(this.onGround){
+			if(!this.jumping) {
+				this.jumping = true;
+				this.doubleJumped = false;
+				this.velocity.y = -2000;
+			}
+		}else{
+			this.doubleJump();
+		}
+	}
+	
+	jumpStop() {
+		this.jumping = false;
+		this.jumpCooldown = 0;
+	}
+	
+	doubleJump() {
+		if(this.doubleJumped == false) {
+			this.doubleJumped = true;
+			this.velocity.y = -1700;
+		}
 	}
 }
 

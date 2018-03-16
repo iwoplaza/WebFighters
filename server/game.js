@@ -1,11 +1,32 @@
 var Player = require('./player.js');
 var Watcher = require('./watcher.js');
+var Time = require('../static/js/util/time.js');
+var World = require('./world/world.js');
+var MessageHandler = require('./messageHandler.js');
+var Platform = require('./world/platform.js');
 
 class Game {
 	constructor(id) {
 		this.id = id;
+		this.world = new World();
 		this.players = [];
 		this.watchers = [];
+		
+		this.world.addPlatform(new Platform(-900, 900, -930, 60));
+		this.world.addPlatform(new Platform(-900, 900, 300, 500));
+		this.world.addPlatform(new Platform(400, 1500, -220, 60));
+		this.world.addPlatform(new Platform(-1500, -400, -220, 60));
+	}
+	
+	update() {
+		for(let i in this.players) {
+			if(this.players[i])
+				this.players[i].update(this);
+		}
+	}
+	
+	updateState() {
+		MessageHandler
 	}
 	
 	doesPlayerConnectionExist(connection) {

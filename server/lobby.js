@@ -1,7 +1,24 @@
 Game = require('./game.js');
+Time = require('../static/js/util/time.js');
 
 var Lobby = {};
 Lobby.games = [];
+
+Lobby.update = function() {
+	for(let i in Lobby.games) {
+		if(Lobby.games[i]) {
+			Lobby.games[i].update();
+		}
+	}
+}
+
+Lobby.updateState = function() {
+	for(let i in Lobby.games) {
+		if(Lobby.games[i]) {
+			MessageHandler.sendUpdateStatePackage(Lobby.games[i]);
+		}
+	}
+}
 
 Lobby.getFreeGameId = function() {
 	let freeId = 0;

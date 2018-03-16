@@ -10,7 +10,7 @@ class Player {
 		this.moveDirection = 0;
 		this.doubleJumped = false;
 		this.jumping = false;
-		this.turn = false;
+		this.turn = true;
 		this.onGround = false;
 		
 		this.movementSpeed = 30000;
@@ -47,10 +47,17 @@ class Player {
     draw() {
         ctx.save();
         ctx.translate(this.location.x, this.location.y);
-        ctx.scale(this.turn ? 1 : -1, 1);
 		
+		ctx.save();
+        ctx.scale(this.turn ? 1 : -1, 1);
         this.model.draw();
-        
+        ctx.restore();
+		
+		ctx.font = "70px Arial";
+		ctx.fillStyle = "#fff";
+		ctx.textAlign = "center";
+		ctx.fillText(this.name, 0, -200);
+		
         ctx.restore();
     }
 	

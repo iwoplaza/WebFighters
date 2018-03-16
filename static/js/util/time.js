@@ -10,4 +10,4 @@ Time.update = function() {
 }
 
 if(typeof module !== 'undefined')
-	module.exports.Time = Time;
+	module.exports = Time;
