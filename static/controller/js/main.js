@@ -1,11 +1,11 @@
 var canvas, ctx;
-var movePadMovement;
-var movePadAttack;
-var movePadJump;
+var padMoveLeft;
+var padMoveRight;
+var padAttack;
+var padJump;
 var loginPrompt;
 
 // -1 for going left, 0 staying still, 1 for going right
-var movementState = 0;
 var jumpState = 0;
 
 function main() {
@@ -14,41 +14,39 @@ function main() {
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext('2d');
     
-    movePadMovement = new MovePad(0, 0, canvas.width/2, canvas.height, 0);
-	movePadJump = new MovePad(canvas.width/2, 0, canvas.width/2, canvas.height/2, 180);
-    movePadAttack = new MovePad(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2, 210);
+    padMoveLeft = new PressPad(0, 0, canvas.width/4, canvas.height, 0);
+    padMoveRight = new PressPad(canvas.width/4, 0, canvas.width/4, canvas.height, 50);
+	padJump = new PressPad(canvas.width/2, 0, canvas.width/2, canvas.height/2, 180);
+    padAttack = new PressPad(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2, 210);
     
-	movePadJump.onpressed = function(pad) {
+	padJump.onpressed = function(pad) {
 		sendPlayerAction(0);
 	}
 	
-	movePadJump.onreleased = function(pad) {
+	padJump.onreleased = function(pad) {
 		sendPlayerAction(1);
 	}
 	
-	movePadMovement.onmoved = function(pad) {
-		let x = pad.getDeltaX();
-		const threshold = 30;
-		if(x < -threshold) {
-			if(movementState != -1) {
-				movementState = -1;
-				sendPlayerAction(2);
-			}
-		}else if(x > threshold) {
-			if(movementState != 1) {
-				movementState = 1;
-				sendPlayerAction(3);
-			}
-		}else if(movementState != 0){
-			movementState = 0;
-			sendPlayerAction(4);
-		}
+	padMoveLeft.onpressed = function(pad) {
+		sendPlayerAction(2);
 	}
 	
-	movePadMovement.onreleased = function(pad) {
-		movementState = 0;
-		sendPlayerAction(4);
-		console.log('Released');
+	padMoveRight.onpressed = function(pad) {
+		sendPlayerAction(3);
+	}
+	
+	padMoveLeft.onreleased = function(pad) {
+		if(!padMoveRight.pressed)
+			sendPlayerAction(4);
+	}
+	
+	padMoveRight.onreleased = function(pad) {
+		if(!padMoveLeft.pressed)
+			sendPlayerAction(4);
+	}
+	
+	padAttack.onpressed = function(pad) {
+		sendPlayerAction(5);
 	}
 	
 	loginPrompt = new LoginPrompt(joinGame);
@@ -80,9 +78,10 @@ function sendPlayerAction(action) {
 function run() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    movePadMovement.draw();
-	movePadJump.draw();
-    movePadAttack.draw();
+    padMoveLeft.draw();
+	padMoveRight.draw();
+    padJump.draw();
+    padAttack.draw();
     
     requestAnimationFrame(run);
 }

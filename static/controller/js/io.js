@@ -6,34 +6,38 @@ IO.setupControls = function() {
 	document.onmousedown = function(e) {
 		e.preventDefault();
 		let coords = pageToCanvasCoords(e.clientX, e.clientY);
-		movePadMovement.onPress(coords.x, coords.y, null);
-		movePadJump.onPress(coords.x, coords.y, null);
-		movePadAttack.onPress(coords.x, coords.y, null);
+		padMoveLeft.onPress(coords.x, coords.y, null);
+		padMoveRight.onPress(coords.x, coords.y, null);
+		padJump.onPress(coords.x, coords.y, null);
+		padAttack.onPress(coords.x, coords.y, null);
 	};
 
 	document.onmouseup = function(e) {
 		e.preventDefault();
 		let coords = pageToCanvasCoords(e.clientX, e.clientY);
-		movePadMovement.onRelease(coords.x, coords.y, null);
-		movePadJump.onRelease(coords.x, coords.y, null);
-		movePadAttack.onRelease(coords.x, coords.y, null);
+		padMoveLeft.onRelease(coords.x, coords.y, null);
+		padMoveRight.onRelease(coords.x, coords.y, null);
+		padJump.onRelease(coords.x, coords.y, null);
+		padAttack.onRelease(coords.x, coords.y, null);
 	};
 
 	document.onmousemove = function(e) {
 		e.preventDefault();
 		let coords = pageToCanvasCoords(e.clientX, e.clientY);
-		movePadMovement.onMove(coords.x, coords.y, null);
-		movePadJump.onMove(coords.x, coords.y, null);
-		movePadAttack.onMove(coords.x, coords.y, null);
+		padMoveLeft.onMove(coords.x, coords.y, null);
+		padMoveRight.onMove(coords.x, coords.y, null);
+		padJump.onMove(coords.x, coords.y, null);
+		padAttack.onMove(coords.x, coords.y, null);
 	};
 
 	document.ontouchstart = function(e) {
 		e.preventDefault();
 		for(let touch of e.changedTouches) {
 			let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
-			movePadMovement.onPress(coords.x, coords.y, touch);
-			movePadJump.onPress(coords.x, coords.y, touch);
-			movePadAttack.onPress(coords.x, coords.y, touch);
+			padMoveLeft.onPress(coords.x, coords.y, touch);
+			padMoveRight.onPress(coords.x, coords.y, touch);
+			padJump.onPress(coords.x, coords.y, touch);
+			padAttack.onPress(coords.x, coords.y, touch);
 		}
 	};
 
@@ -41,19 +45,29 @@ IO.setupControls = function() {
 		e.preventDefault();
 		for(let touch of e.changedTouches) {
 			let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
-			movePadMovement.onRelease(coords.x, coords.y, touch);
-			movePadJump.onRelease(coords.x, coords.y, touch);
-			movePadAttack.onRelease(coords.x, coords.y, touch);
+			padMoveLeft.onRelease(coords.x, coords.y, touch);
+			padMoveRight.onRelease(coords.x, coords.y, touch);
+			padJump.onRelease(coords.x, coords.y, touch);
+			padAttack.onRelease(coords.x, coords.y, touch);
 		}
 	};
 
 	document.ontouchmove = function(e) {
 		e.preventDefault();
+		padMoveLeft.preMove();
+		padMoveRight.preMove();
+		padJump.preMove();
+		padAttack.preMove();
 		for(let touch of e.changedTouches) {
 			let coords = pageToCanvasCoords(touch.clientX, touch.clientY);
-			movePadMovement.onMove(coords.x, coords.y, touch);
-			movePadJump.onMove(coords.x, coords.y, touch);
-			movePadAttack.onMove(coords.x, coords.y, touch);
+			padMoveLeft.onMove(coords.x, coords.y, touch);
+			padMoveRight.onMove(coords.x, coords.y, touch);
+			padJump.onMove(coords.x, coords.y, touch);
+			padAttack.onMove(coords.x, coords.y, touch);
 		}
+		padMoveLeft.postMove();
+		padMoveRight.postMove();
+		padJump.postMove();
+		padAttack.postMove();
 	}
 }

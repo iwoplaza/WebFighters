@@ -14,6 +14,7 @@ class Player {
 		this.doubleJumped = false;
 		this.jumping = false;
 		this.turn = false;
+		this.onGroundBefore = false;
 		this.onGround = false;
 		
 		this.movementSpeed = 30000;
@@ -28,6 +29,7 @@ class Player {
 		this.velocity.y += this.gravity;
 		
 		// Collision ///////////////////
+		this.onGroundBefore = this.onGround;
 		this.onGround = false;
 		
 		for(let platform of game.world.platforms) {
@@ -35,6 +37,9 @@ class Player {
 			if(isInBounds && this.location.y <= platform.y && this.location.y + this.velocity.y*Time.deltaTime >= platform.y) {
 				this.location.y = platform.y;
 				this.velocity.y = 0;
+				if(!this.onGroundBefore) {
+					this.onLanded();
+				}
 				this.onGround = true;
 			}
 		}
@@ -56,12 +61,15 @@ class Player {
 		this.turn = amount > 0 ? true : amount < 0 ? false : this.turn;
 	}
 	
+	onLanded() {
+		this.doubleJumped = false;
+	}
+	
 	// Makes the player jump
 	jumpBegin() {
 		if(this.onGround){
 			if(!this.jumping) {
 				this.jumping = true;
-				this.doubleJumped = false;
 				this.velocity.y = -2000;
 			}
 		}else{
@@ -79,6 +87,12 @@ class Player {
 			this.doubleJumped = true;
 			this.velocity.y = -1700;
 		}
+	}
+	
+	attack() {
+		console.log("Attacking");
+		let knockback = 1000;
+		this.velocity.x += this.turn ? -knockback : knockback;
 	}
 }
 

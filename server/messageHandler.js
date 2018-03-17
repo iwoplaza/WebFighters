@@ -6,8 +6,6 @@ MessageHandler.messageCallbacks = {};
 
 MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION] = function(connection, packet) {
 	let msg = packet[0];
-	console.log('Got a player action:' + msg.action);
-	console.dir(packet);
 	
 	let session = connection.session;
 	if(!session || !session.player) {
@@ -38,6 +36,9 @@ MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION] = function(connect
 		case 4:
 			player.move(0);
 			break;
+		case 5:
+			player.attack();
+			break;
 	}
 	
 	let response = Coder.encode({
@@ -46,7 +47,6 @@ MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION] = function(connect
 	}, Coder.Messages.PLAYER_ACTION_UPDATE);
 	
 	for(let watcher of game.watchers) {
-		console.log(" - Sending update to spectator");
 		MessageHandler.send(watcher.connection, response);
 	}
 }

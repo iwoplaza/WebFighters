@@ -74,6 +74,9 @@ MessageHandler.messageCallbacks[Coder.Messages.PLAYER_ACTION_UPDATE] = function(
 		case 4:
 			player.move(0);
 			break;
+		case 5:
+			player.attack();
+			break;
 	}
 }
 
