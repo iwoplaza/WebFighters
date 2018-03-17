@@ -1,151 +1,18 @@
 body {
-	font-family: Roboto,-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI","Oxygen","Ubuntu","Cantarell","Open Sans",sans-serif;
 	margin: 0 0;
-	padding: 0 0;
-	background-color: #1f1f1f;
+	background-color: #111;
 }
 
-.padded-container {
+.container {
+	position: absolute;
+	top: 50vh;
 	display: block;
-	box-sizing: border-box;
-	width: 60%;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-header {
-	box-sizing: border-box;
-	width: 100%;
-	height: 100px;
-	background-color: #2a5bb9;
-}
-
-header > div {
-	position: relative;
-	height: 100%;
-	padding: 10px 0px;
-}
-
-header img {
-	float: left;
-	height: 100%;
-}
-
-header h1 {
-	height: 100%;
-	margin: 0 0;
-	margin-left: 90px;
-	padding: 0 0;
-	font-size: 3em;
-	font-weight: lighter;
-	line-height: 80px;
-	color: #dde4f8;
-}
-
-header h1 strong {
-	font-weight: bold;
-}
-
-main {
-	box-sizing: border-box;
 	width: 100%;
 	margin: 0 auto;
-	background-color: #1f1f1f;
-	color: #ccc;
 }
 
-main > div {
-	padding: 10px 10px;
-}
-
-main > div h1 {
-	font-size: 3em;
-	margin: 10px 0;
-}
-
-main table td {
-	padding: 10px 10px;
-}
-
-main nav {
-	padding: 10px 0px;
-	border-bottom: 1px solid #eee;
-}
-
-main nav ul {
-	list-style: none;
-	padding: 0 0;
-	margin: 0 0;
-}
-
-main nav li {
-	display: inline-block;
-	margin: 0px 10px;
-	color: #ccc;
-}
-
-main nav li.active {
-	font-weight: bold;
-	color: #eee;
-}
-
-footer {
-	position: fixed;
-	bottom: 0;
-	color: #444;
-	width: 100%;
-}
-
-footer > div {
-	box-sizing: border-box;
-	border-top: 1px solid #444;
-	padding: 5px 10px;
-}
-
-.float-left { float: left; }
-.float-right { float: right; }
-.center-block { box-sizing: border-box; text-align: center; width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; }
-.tall-block { height: 64px; }
-
-p {
-	font-size: 1.3em;
-	text-indent: 40px;
-	margin: 20px 0px;
-}
-
-a {
-	text-decoration: none;
-	color: #366ec9;
-	font-weight: bold;
-	margin: 0 0;
-	padding: 0 0;
-}
-
-a:hover {
-	text-decoration: none;
-	color: #6998e5;
-	font-weight: bold;
-}
-
-@media only screen and (max-width: 1200px) {
-	main table {
-		display: block;
-	}
-	
-	main table td {
-		display: block;
-	}
-}
-
-@media only screen and (max-width: 600px) {
-	.padded-container {
-		width: 80%;
-	}
-	
-	main nav li {
-		display: block;
-		text-align: center;
-		border-bottom: 1px solid #333;
-		padding: 4px 0px;
-	}
+#canvas {
+	display: block;
+	margin: 0 auto;
+	margin-top: -300px;
 }

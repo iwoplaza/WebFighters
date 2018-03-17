@@ -12,7 +12,7 @@ class Game {
 		this.players = [];
 		this.watchers = [];
 		
-		this.world.addPlatform(new Platform(-900, 900, -930, 60));
+		this.world.addPlatform(new Platform(-900, 900, -890, 60));
 		this.world.addPlatform(new Platform(-900, 900, 300, 500));
 		this.world.addPlatform(new Platform(400, 1500, -220, 60));
 		this.world.addPlatform(new Platform(-1500, -400, -220, 60));
@@ -23,10 +23,6 @@ class Game {
 			if(this.players[i])
 				this.players[i].update(this);
 		}
-	}
-	
-	updateState() {
-		MessageHandler
 	}
 	
 	doesPlayerConnectionExist(connection) {
