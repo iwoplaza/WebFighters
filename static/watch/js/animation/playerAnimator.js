@@ -20,6 +20,10 @@ class PlayerAnimator {
 				this.performWalk();
 			}
 		}
+		
+		if(this.player.weaponId != null) {
+			this.performWeaponry();
+		}
 	}
 	
 	performIdle() {
@@ -77,5 +81,17 @@ class PlayerAnimator {
 		this.model.boneLeftForeleg.orientation = Math.lerp(90, 10, t);
 		this.model.boneRightLeg.orientation = Math.lerp(10, -70, t);
 		this.model.boneRightForeleg.orientation = Math.lerp(10, 90, t);
+	}
+	
+	performWeaponry() {
+		let armBone = this.model.boneRightArm;
+		let forearmBone = this.model.boneRightForearm;
+		if(!this.player.turn) {
+			armBone = this.model.boneLeftArm;
+			forearmBone = this.model.boneLeftForearm;
+		}
+		
+		armBone.orientation = -this.model.boneStomach.orientation-90;
+		forearmBone.orientation = 0;
 	}
 }

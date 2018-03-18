@@ -4,6 +4,7 @@ class Game {
 		this.playersAmount = 0;
 		this.world = new World();
 		this.camera = new Camera();
+		this.visualSystem = new VisualSystem();
     }
     
     addPlayer(player) {
@@ -36,6 +37,8 @@ class Game {
 		this.camera.applyTransform(ctx);
 		
         this.world.draw();
+		this.visualSystem.update();
+		this.visualSystem.draw(ctx);
         for(let i in this.players) {
 			if(this.players[i])
             	this.players[i].draw();

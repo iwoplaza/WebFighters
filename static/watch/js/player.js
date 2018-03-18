@@ -13,6 +13,7 @@ class Player {
 		this.turn = false;
 		this.onGroundBefore = false;
 		this.onGround = false;
+		this.weaponId = 0;
 		
 		this.movementSpeed = 30000;
 		this.maxVelocityX = 700;
@@ -109,5 +110,7 @@ class Player {
 		console.log("Attacking");
 		let knockback = 1000;
 		this.velocity.x += this.turn ? -knockback : knockback;
+		
+		game.visualSystem.addVisual(new LaserBeamVisual(new Vector2(this.location.x, this.location.y-80), this.turn));
 	}
 }
