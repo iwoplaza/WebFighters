@@ -111,6 +111,15 @@ class Player {
 		let knockback = 1000;
 		this.velocity.x += this.turn ? -knockback : knockback;
 		
-		game.visualSystem.addVisual(new LaserBeamVisual(new Vector2(this.location.x, this.location.y-80), this.turn));
+		let gunLocation = new Vector2(this.location.x, this.location.y-90);
+		if(this.turn)
+			gunLocation.x += 50;
+		else
+			gunLocation.x -= 70;
+		game.visualSystem.addVisual(new LaserBeamVisual(gunLocation, this.turn));
+		
+		for(let i = 0; i < 5; ++i) {
+			game.visualSystem.addVisual(new LaserSparkVisual(new Vector2(gunLocation.x, gunLocation.y), ((this.turn ? 0 : 180) + (Math.random()*2-1)*40)/180*Math.PI, this.velocity));
+		}
 	}
 }

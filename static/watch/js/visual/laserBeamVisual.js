@@ -13,7 +13,7 @@ class LaserBeamVisual {
 	draw(ctx) {
 		ctx.save();
 		ctx.translate(this.location.x, this.location.y);
-		let l = Math.floor(Math.min(100, 50-this.lifetime*200));
+		let l = Math.floor(Math.min(100, 100-this.lifetime*400));
 		let m = this.direction ? 1 : -1;
 		let width = 800 * m;
 		let offset = (400 * (this.lifetime / this.maxLifetime)) * m;
